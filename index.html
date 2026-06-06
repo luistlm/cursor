@@ -8,9 +8,317 @@
       content="freemoney is a personal finance, expense tracking, and savings optimization app."
     />
     <title>freemoney</title>
+    <style>
+      .file-fallback {
+        min-height: 100vh;
+        padding: 28px;
+        background:
+          radial-gradient(circle at top left, rgb(37 99 235 / 0.18), transparent 34rem),
+          #eef3f8;
+        color: #121826;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .file-fallback * {
+        box-sizing: border-box;
+      }
+
+      .file-shell {
+        width: min(1080px, 100%);
+        margin: 0 auto;
+        padding-bottom: 92px;
+      }
+
+      .file-eyebrow {
+        margin: 0 0 8px;
+        color: #2563eb;
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .file-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 20px;
+      }
+
+      .file-header h1 {
+        margin: 0;
+        font-size: clamp(2.4rem, 7vw, 5rem);
+        letter-spacing: -0.07em;
+      }
+
+      .file-header p,
+      .file-muted {
+        color: #64748b;
+      }
+
+      .file-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .file-card {
+        border: 1px solid #dbe4ee;
+        border-radius: 28px;
+        background: #ffffff;
+        box-shadow: 0 24px 70px rgb(15 23 42 / 0.12);
+        padding: 22px;
+      }
+
+      .file-card h2 {
+        margin: 0 0 12px;
+        font-size: clamp(1.5rem, 4vw, 2.7rem);
+        letter-spacing: -0.05em;
+      }
+
+      .file-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .file-list div,
+      .file-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .file-row {
+        border: 1px solid #dbe4ee;
+        border-radius: 18px;
+        background: #f8fafc;
+        padding: 12px;
+      }
+
+      .file-positive {
+        color: #059669;
+      }
+
+      .file-negative {
+        color: #dc2626;
+      }
+
+      .file-bar {
+        overflow: hidden;
+        height: 12px;
+        border-radius: 999px;
+        background: rgb(100 116 139 / 0.18);
+      }
+
+      .file-bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #2563eb, #10b981);
+      }
+
+      .file-nav {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        left: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        width: min(720px, calc(100% - 36px));
+        margin: 0 auto;
+        border: 1px solid #dbe4ee;
+        border-radius: 28px;
+        background: rgb(255 255 255 / 0.92);
+        box-shadow: 0 24px 70px rgb(15 23 42 / 0.12);
+        padding: 8px;
+      }
+
+      .file-nav button,
+      .file-button {
+        border: 0;
+        border-radius: 999px;
+        background: #2563eb;
+        color: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 850;
+        padding: 12px 14px;
+      }
+
+      .file-nav button:not(.active) {
+        background: transparent;
+        color: #64748b;
+      }
+
+      .file-tab[hidden] {
+        display: none;
+      }
+
+      .file-note {
+        border: 1px solid #bfdbfe;
+        border-radius: 20px;
+        background: #eff6ff;
+        padding: 14px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .file-fallback {
+          background: #000000;
+          color: #f8fafc;
+        }
+
+        .file-card,
+        .file-nav {
+          border-color: #24242a;
+          background: #0a0a0d;
+        }
+
+        .file-row {
+          border-color: #24242a;
+          background: #141419;
+        }
+
+        .file-note {
+          border-color: #1e3a8a;
+          background: #0b1220;
+        }
+
+        .file-header p,
+        .file-muted {
+          color: #94a3b8;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .file-fallback {
+          padding: 16px;
+        }
+
+        .file-header,
+        .file-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="app">
+      <div class="file-fallback" data-file-fallback>
+        <div class="file-shell">
+          <header class="file-header">
+            <div>
+              <p class="file-eyebrow">freemoney</p>
+              <h1>Personal finance, no blank screen.</h1>
+              <p>Desktop fallback mode for opening this file directly in Chrome.</p>
+            </div>
+            <div class="file-note">
+              For the full PDF parser and charts, run <strong>npm install</strong> and
+              <strong>npm run dev</strong>, then open the localhost URL.
+            </div>
+          </header>
+
+          <main>
+            <section class="file-tab" data-file-tab="main">
+              <div class="file-grid">
+                <article class="file-card">
+                  <p class="file-eyebrow">Current month income</p>
+                  <h2>ARS 2,330,000</h2>
+                  <div class="file-list">
+                    <div><span>Salary</span><strong>ARS 1,980,000</strong></div>
+                    <div><span>Freelance</span><strong>ARS 350,000</strong></div>
+                  </div>
+                </article>
+                <article class="file-card">
+                  <p class="file-eyebrow">Savings summary</p>
+                  <h2>ARS 4,372,000</h2>
+                  <p class="file-negative">ARS 264,000 less than previous month</p>
+                  <div class="file-bar"><span style="width: 61%"></span></div>
+                </article>
+                <article class="file-card">
+                  <p class="file-eyebrow">Expenses by category</p>
+                  <h2>ARS 95,989</h2>
+                  <div class="file-list">
+                    <div><span>Food</span><strong>44%</strong></div>
+                    <div><span>Utilities</span><strong>25%</strong></div>
+                    <div><span>Transportation</span><strong>10%</strong></div>
+                  </div>
+                </article>
+                <article class="file-card">
+                  <p class="file-eyebrow">Statement processing</p>
+                  <h2>Approval flow</h2>
+                  <p class="file-muted">
+                    Imported English or Spanish statements are reviewed before transactions are added.
+                  </p>
+                </article>
+              </div>
+            </section>
+
+            <section class="file-tab" data-file-tab="income" hidden>
+              <article class="file-card">
+                <p class="file-eyebrow">Income</p>
+                <h2>Sources and recurrence</h2>
+                <div class="file-list">
+                  <div class="file-row"><span>Salary ACME Payroll - recurrent monthly</span><strong class="file-positive">+USD 1,800</strong></div>
+                  <div class="file-row"><span>Freelance invoice Studio Norte - this month only</span><strong class="file-positive">+ARS 350,000</strong></div>
+                </div>
+              </article>
+            </section>
+
+            <section class="file-tab" data-file-tab="spending" hidden>
+              <article class="file-card">
+                <p class="file-eyebrow">Spending</p>
+                <h2>WhatsApp-style capture</h2>
+                <p class="file-muted">Examples: "1500 coffee", "Dinner friends 12000", "Software subscription 15 usd".</p>
+                <div class="file-list">
+                  <div class="file-row"><span>Supermercado Central - Food</span><strong class="file-negative">-ARS 42,000</strong></div>
+                  <div class="file-row"><span>Spotify subscription - Music/Subscriptions</span><strong class="file-negative">-USD 7.99</strong></div>
+                  <div class="file-row"><span>Uber ride - Transportation</span><strong class="file-negative">-ARS 9,200</strong></div>
+                </div>
+              </article>
+            </section>
+
+            <section class="file-tab" data-file-tab="savings" hidden>
+              <article class="file-card">
+                <p class="file-eyebrow">Savings</p>
+                <h2>Goals and multi-currency wallet</h2>
+                <div class="file-list">
+                  <div><span>Emergency Fund</span><strong>USD 1,350 / USD 5,000</strong></div>
+                  <div class="file-bar"><span style="width: 27%"></span></div>
+                  <div><span>Hardware / New Instruments</span><strong>ARS 420,000</strong></div>
+                  <div><span>Stablecoin wallet</span><strong>USDC 320</strong></div>
+                </div>
+              </article>
+            </section>
+          </main>
+
+          <nav class="file-nav" aria-label="Fallback navigation">
+            <button class="active" type="button" data-file-nav="main">Main</button>
+            <button type="button" data-file-nav="income">Income</button>
+            <button type="button" data-file-nav="spending">Spending</button>
+            <button type="button" data-file-nav="savings">Savings</button>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.querySelectorAll("[data-file-nav]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = button.getAttribute("data-file-nav");
+          document.querySelectorAll("[data-file-nav]").forEach((item) => {
+            item.classList.toggle("active", item === button);
+          });
+          document.querySelectorAll("[data-file-tab]").forEach((item) => {
+            item.hidden = item.getAttribute("data-file-tab") !== target;
+          });
+        });
+      });
+    </script>
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>

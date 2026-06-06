@@ -70,6 +70,7 @@ globalThis.HTMLCanvasElement = class {};
 const files = await readdir(new URL("../dist/assets/", import.meta.url));
 const appBundle = files.find((file) => file.startsWith("index-") && file.endsWith(".js"));
 const indexHtml = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
+const sourceIndexHtml = await readFile(new URL("../index.html", import.meta.url), "utf8");
 
 if (!appBundle) {
   throw new Error("Could not find built app bundle.");
@@ -77,6 +78,10 @@ if (!appBundle) {
 
 if (indexHtml.includes('src="/assets/') || indexHtml.includes('href="/assets/')) {
   throw new Error("Built asset URLs must be relative so subpath previews do not render blank.");
+}
+
+if (!sourceIndexHtml.includes("data-file-fallback") || !indexHtml.includes("data-file-fallback")) {
+  throw new Error("Desktop file-open fallback is missing from index.html.");
 }
 
 await import(pathToFileURL(new URL(`../dist/assets/${appBundle}`, import.meta.url).pathname));

@@ -26,6 +26,11 @@ npm install
 npm run dev
 ```
 
+Open the localhost URL printed by Vite for the full app experience. If you open
+`index.html` directly from the desktop with Chrome, freemoney shows a static
+desktop fallback instead of a blank page because browsers cannot run the Vite
+TypeScript source app from `file://`.
+
 ## Production build
 
 ```bash
