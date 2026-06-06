@@ -129,12 +129,12 @@ applyTheme();
 render();
 
 function loadState(): AppState {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  const saved = readStoredState();
   if (saved) {
     try {
       return JSON.parse(saved) as AppState;
     } catch {
-      localStorage.removeItem(STORAGE_KEY);
+      removeStoredState();
     }
   }
 
@@ -238,7 +238,7 @@ function contribution(
 }
 
 function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  writeStoredState(JSON.stringify(state));
 }
 
 function render() {
@@ -1319,12 +1319,12 @@ function currencySelect(name: string, value: Currency) {
 }
 
 function applyTheme() {
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const prefersDark = getColorSchemeMedia()?.matches ?? false;
   const active = state.theme === "system" ? (prefersDark ? "dark" : "light") : state.theme;
   document.documentElement.dataset.theme = active;
 }
 
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+getColorSchemeMedia()?.addEventListener?.("change", () => {
   if (state.theme === "system") {
     applyTheme();
     render();
@@ -1336,7 +1336,38 @@ function chartTextColor() {
 }
 
 function uid(prefix: string) {
-  return `${prefix}-${crypto.randomUUID()}`;
+  const randomId =
+    globalThis.crypto?.randomUUID?.() ??
+    `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  return `${prefix}-${randomId}`;
+}
+
+function readStoredState() {
+  try {
+    return globalThis.localStorage?.getItem(STORAGE_KEY) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredState(value: string) {
+  try {
+    globalThis.localStorage?.setItem(STORAGE_KEY, value);
+  } catch {
+    // Some embedded previews and private browsing modes block storage.
+  }
+}
+
+function removeStoredState() {
+  try {
+    globalThis.localStorage?.removeItem(STORAGE_KEY);
+  } catch {
+    // Ignore blocked storage cleanup; the app can continue with seed data.
+  }
+}
+
+function getColorSchemeMedia() {
+  return typeof window.matchMedia === "function" ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 }
 
 function selected(a: string, b: string) {
