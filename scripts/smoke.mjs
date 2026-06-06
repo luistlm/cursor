@@ -1,4 +1,4 @@
-import { readdir } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 const root = {
@@ -69,9 +69,14 @@ globalThis.HTMLCanvasElement = class {};
 
 const files = await readdir(new URL("../dist/assets/", import.meta.url));
 const appBundle = files.find((file) => file.startsWith("index-") && file.endsWith(".js"));
+const indexHtml = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
 
 if (!appBundle) {
   throw new Error("Could not find built app bundle.");
+}
+
+if (indexHtml.includes('src="/assets/') || indexHtml.includes('href="/assets/')) {
+  throw new Error("Built asset URLs must be relative so subpath previews do not render blank.");
 }
 
 await import(pathToFileURL(new URL(`../dist/assets/${appBundle}`, import.meta.url).pathname));
